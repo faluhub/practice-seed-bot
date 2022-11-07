@@ -9,7 +9,7 @@ schemas = [
 
 tables = [
     "CREATE TABLE `practiceseedbot`.`uuids` (`id` BIGINT NOT NULL, `uuid` LONGTEXT NULL, PRIMARY KEY (`id`))",
-    "CREATE TABLE `practiceseedbot`.`seeds` (`seed` BIGINT NOT NULL, `message_id` BIGINT NOT NULL, `author_id` BIGINT NOT NULL, `seed_notes` LONGTEXT NULL, `upvotes` JSON NULL, PRIMARY KEY (`seed`), UNIQUE INDEX `seed_UNIQUE` (`seed` ASC) VISIBLE, UNIQUE INDEX `message_id_UNIQUE` (`message_id` ASC) VISIBLE)"
+    "CREATE TABLE `practiceseedbot`.`seeds` (`seed` VARCHAR(100) NOT NULL, `message_id` BIGINT NOT NULL, `author_id` BIGINT NOT NULL, `seed_notes` LONGTEXT NULL, `upvotes` JSON NULL, PRIMARY KEY (`seed`), UNIQUE INDEX `seed_UNIQUE` (`seed` ASC) VISIBLE, UNIQUE INDEX `message_id_UNIQUE` (`message_id` ASC) VISIBLE)"
 ]
 
 class Result:

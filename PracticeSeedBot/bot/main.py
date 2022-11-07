@@ -5,13 +5,13 @@ from PracticeSeedBot import constants, secrets
 from PracticeSeedBot.database import classes
 
 class PracticeSeedBot(asb):
-    def __init__(self, debug=True):
+    def __init__(self, debug=False):
         super().__init__(
             intents=discord.Intents(guilds=True),
             case_insensitive=True,
             allowed_mentions=discord.AllowedMentions(everyone=False),
             owner_ids=[810863994985250836],
-            debug_guilds=[1018128160962904114]
+            debug_guilds=[1018128160962904114, 1035808396349292546]
         )
 
         self.cog_blacklist = []

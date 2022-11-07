@@ -7,7 +7,7 @@ from PracticeSeedBot.bot.main import PracticeSeedBot
 
 class SeedView(View):
     def __init__(self, bot: PracticeSeedBot):
-        super().__init__()
+        super().__init__(timeout=None)
 
         self.uuid_db = classes.UUIDDatabase()
         self.seed_db = classes.SeedsDatabase()
