@@ -19,14 +19,20 @@ class PracticeSeedBot(asb):
         self.path = "./PracticeSeedBot/bot/cogs"
 
         self.submission_channel_id = 1038788499161235477 if debug else 1035808397351714929
+        self.community_channel_id = 1039991212716863529
+        self.seed_server_id = 1018128160962904114 if debug else 1035808396349292546
+        self.developer_role_id = 1038468830990708756
+        self.top_runner_role_id = self.developer_role_id if debug else 1035818019928150027
 
         @commands.slash_command(name="reload", description="Reload the cogs.")
         async def reload_cogs(ctx: ApplicationContext):
             msg = await ctx.respond("Thinking...")
-            print("Reloading cogs...")
-            for extension in ctx.bot.extensions:
-                ctx.bot.reload_extension(extension)
-            return await msg.edit_original_message(content="Done!")
+            if self.get_guild(self.seed_server_id).get_role(self.developer_role_id) in ctx.author.roles:
+                print("Reloading cogs...")
+                for extension in ctx.bot.extensions:
+                    ctx.bot.reload_extension(extension)
+                return await msg.edit_original_message(content="Done!")
+            await msg.edit_original_message(content="You do not have sufficient permissions to execute this command!")
         
         self.add_application_command(reload_cogs)
     

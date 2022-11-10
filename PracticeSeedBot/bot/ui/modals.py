@@ -31,13 +31,15 @@ class SubmitModal(Modal):
         except ValueError: return await interaction.response.send_message("That is an invalid seed! Please try again.", ephemeral=True)
 
         db = classes.SeedsDatabase()
-        channel = self.bot.get_channel(self.bot.submission_channel_id)
+        if self.bot.get_guild(self.bot.seed_server_id).get_role(self.bot.top_runner_role_id) in interaction.user.roles:
+            channel = self.bot.get_channel(self.bot.submission_channel_id)
+        else:
+            channel = self.bot.get_channel(self.bot.community_channel_id)
+
         try:
             msg = await channel.send(embed=self.bot.build_new_submission_embed(seed, seed_notes, interaction.user.id), view=views.SeedView(self.bot))
             db.create_seed(self.children[0].value, msg.id, interaction.user.id, seed_notes)
 
-            return await interaction.response.send_message("Done! Thanks for your submission.", ephemeral=True)
-        except DataError:
-            return await interaction.response.send_message("That seed is too long! Please try again.", ephemeral=True)
+            return await interaction.response.send_message("Done! Thank you for your submission.", ephemeral=True)
         except IntegrityError:
             return await interaction.response.send_message("That seed has already been submitted!", ephemeral=True)

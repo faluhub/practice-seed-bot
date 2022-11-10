@@ -50,3 +50,11 @@ class SeedsDatabase:
             upvotes.append(author)
             database.update(f"UPDATE `practiceseedbot`.`seeds` SET `upvotes` = '{upvotes}' WHERE (`seed` = '{seed}')")
             return len(upvotes)
+        
+    def remove_upvote(self, seed: str, author: int) -> int | None:
+        if self.seed_exists(seed) and self.has_upvoted(seed, author):
+            upvotes = self.get_upvotes_list(seed)
+            if not upvotes == None:
+                upvotes.remove(author)
+                database.update(f"UPDATE `practiceseedbot.`seeds` SET `upvotes` = '{upvotes}' WHERE (`seed` = '{seed}')")
+                return len(upvotes)
