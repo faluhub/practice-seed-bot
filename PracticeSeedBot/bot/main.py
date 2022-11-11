@@ -31,8 +31,8 @@ class PracticeSeedBot(asb):
                 print("Reloading cogs...")
                 for extension in ctx.bot.extensions:
                     ctx.bot.reload_extension(extension)
-                return await msg.edit_original_message(content="Done!")
-            await msg.edit_original_message(content="You do not have sufficient permissions to execute this command!")
+                return await msg.edit_original_response(content="Done!")
+            await msg.edit_original_response(content="You do not have sufficient permissions to execute this command!")
         
         self.add_application_command(reload_cogs)
     

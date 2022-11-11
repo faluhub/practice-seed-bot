@@ -20,12 +20,12 @@ class Submit(Cog):
     async def link(self, ctx: ApplicationContext, uuid: Option(str, "Enter the UUID.")):
         msg = await ctx.respond("Thinking...", ephemeral=True)
         if not self.check_uuid(uuid):
-            return await msg.edit_original_message(content="That is an invalid UUID!")
+            return await msg.edit_original_response(content="That is an invalid UUID!")
         db = classes.UUIDDatabase()
         if db.uuid_exists(uuid):
-            return await msg.edit_original_message(content="That UUID has already been linked!")
+            return await msg.edit_original_response(content="That UUID has already been linked!")
         db.set_uuid(ctx.author.id, uuid)
-        return await msg.edit_original_message(content="Your UUID has been linked!\nYou can now play practice seeds via Discord.")
+        return await msg.edit_original_response(content="Your UUID has been linked!\nYou can now play practice seeds via Discord.")
     
     @commands.slash_command(name="submit", description="Submit a practice seed.")
     async def submit(self, ctx: commands.ApplicationContext):
