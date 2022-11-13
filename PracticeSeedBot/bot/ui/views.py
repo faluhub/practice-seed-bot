@@ -3,10 +3,9 @@ from discord import ButtonStyle, PartialEmoji
 from discord.ui import View, Button
 from PracticeSeedBot import constants
 from PracticeSeedBot.database import classes
-from PracticeSeedBot.bot.main import PracticeSeedBot
 
 class SeedView(View):
-    def __init__(self, bot: PracticeSeedBot):
+    def __init__(self, bot):
         super().__init__(timeout=None)
 
         self.uuid_db = classes.UUIDDatabase()
