@@ -16,7 +16,8 @@ class SeedView(View):
     
     @discord.ui.button(
         style=ButtonStyle.blurple,
-        label="Play"
+        label="Play",
+        custom_id="seedview:play"
     )
     async def play(self, button: Button, interaction: discord.Interaction):
         if self.uuid_db.id_exists(interaction.user.id):
@@ -30,7 +31,8 @@ class SeedView(View):
     @discord.ui.button(
         style=ButtonStyle.green,
         label="",
-        emoji=PartialEmoji.from_str("<:heart_eyes:1038801251099496458>")
+        emoji=PartialEmoji.from_str("<:heart_eyes:1038801251099496458>"),
+        custom_id="seedview:upvote"
     )
     async def upvote(self, button: Button, interaction: discord.Interaction):
         seed = self.seed_db.get_seed(interaction.message.id)

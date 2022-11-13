@@ -3,17 +3,19 @@ from datetime import datetime
 from discord import ApplicationContext, commands, AutoShardedBot as asb
 from PracticeSeedBot import constants, secrets
 from PracticeSeedBot.database import classes
+from PracticeSeedBot.bot.ui import views
 
 class PracticeSeedBot(asb):
     def __init__(self, debug=False):
         super().__init__(
-            intents=discord.Intents(guilds=True),
+            intents=discord.Intents(guilds=True, members=True),
             case_insensitive=True,
             allowed_mentions=discord.AllowedMentions(everyone=False),
             owner_ids=[810863994985250836],
             debug_guilds=[1018128160962904114, 1035808396349292546]
         )
 
+        self.persistent_views_added = False
         self.cog_blacklist = []
         self.cog_folder_blacklist = ["__pycache__"]
         self.path = "./PracticeSeedBot/bot/cogs"
@@ -35,6 +37,7 @@ class PracticeSeedBot(asb):
             await msg.edit_original_response(content="You do not have sufficient permissions to execute this command!")
         
         self.add_application_command(reload_cogs)
+        super().close
     
     def build_submission_embed(self, seed: int, upvotes: int) -> discord.Embed:
         seed_db = classes.SeedsDatabase()
@@ -43,13 +46,14 @@ class PracticeSeedBot(asb):
         return self.build_new_submission_embed(seed, notes, author, upvotes=upvotes)
     
     def build_new_submission_embed(self, seed: int, notes: str, author: int, *, upvotes: int=0) -> discord.Embed:
+        member = self.get_guild(self.seed_server_id).get_member(author)
         embed = discord.Embed(
             title=str(seed),
             color=constants.COLOR,
             description=f"Seed Notes:\n||{notes}||"
         )
         embed.add_field(name="Upvotes:", value=f"`{upvotes}`")
-        embed.add_field(name="Author:", value=f"`{author}`")
+        embed.add_field(name="Author:", value=f"`{member.name}#{member.discriminator}`")
         return embed
 
     def load_cogs(self, folder=None):
@@ -83,7 +87,14 @@ class PracticeSeedBot(asb):
         print("\nConnected")
         return await super().on_connect()
 
-    async def on_ready(self): return print(f"Ready, took {(datetime.utcnow() - constants.START_TIME).seconds} seconds.")
+    async def on_ready(self):
+        if not self.persistent_views_added:
+            print("Adding persistent views...")
+            self.add_view(views.SeedView(self))
+
+            self.persistent_views_added = True
+
+        return print(f"Ready, took {(datetime.utcnow() - constants.START_TIME).seconds} seconds.")
 
 if __name__ == "__main__":
     exit("The bot cannot be run directly from the bot file.")
