@@ -57,10 +57,14 @@ class SeedsDatabase:
         return False
     
     def get_upvotes(self, seed: str) -> int | None:
-        return len(self.get_upvotes_list(seed))
+        upvotes = self.get_upvotes_list(seed)
+        if not upvotes == None:
+            return len(upvotes)
     
     def get_downvotes(self, seed: str) -> int | None:
-        return len(self.get_downvotes_list(seed))
+        downvotes = self.get_downvotes_list(seed)
+        if not downvotes == None:
+            return len(downvotes)
     
     def add_upvote(self, seed: str, author: int) -> int | None:
         if self.seed_exists(seed) and not self.has_upvoted(seed, author):
