@@ -12,7 +12,7 @@ class PracticeSeedBot(asb):
             case_insensitive=True,
             allowed_mentions=discord.AllowedMentions(everyone=False),
             owner_ids=[810863994985250836],
-            debug_guilds=[1018128160962904114, 1035808396349292546] if not debug else [1018128160962904114]
+            debug_guilds=[1018128160962904114, 1035808396349292546]
         )
 
         self.debug = debug
