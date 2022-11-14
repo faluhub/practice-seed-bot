@@ -21,11 +21,11 @@ class PracticeSeedBot(asb):
         self.cog_folder_blacklist = ["__pycache__"]
         self.path = "./PracticeSeedBot/bot/cogs"
 
-        self.submission_channel_id = 1038788499161235477 if debug else 1035808397351714929
-        self.community_channel_id = 1038788499161235477 if debug else 1039991212716863529
-        self.seed_server_id = 1018128160962904114 if debug else 1035808396349292546
+        self.submission_channel_id = 1035808397351714929
+        self.community_channel_id = 1039991212716863529
+        self.seed_server_id = 1035808396349292546
         self.developer_role_id = 1041756599439593482 if debug else 1038468830990708756
-        self.top_runner_role_id = self.developer_role_id if debug else 1035818019928150027
+        self.top_runner_role_id = 1035818019928150027
 
         @commands.slash_command(name="reload", description="Reload the cogs.")
         async def reload_cogs(ctx: ApplicationContext):
