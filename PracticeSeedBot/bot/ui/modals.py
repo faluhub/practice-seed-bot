@@ -4,7 +4,6 @@ from discord.ui import Modal, InputText
 from PracticeSeedBot.bot.main import PracticeSeedBot
 from PracticeSeedBot.database import classes
 from PracticeSeedBot.bot.ui import views
-from mysql.connector.errors import DataError, IntegrityError
 
 class SubmitModal(Modal):
     def __init__(self, bot: PracticeSeedBot):
@@ -31,9 +30,9 @@ class SubmitModal(Modal):
         except ValueError: return await interaction.response.send_message("That is an invalid seed! Please try again.", ephemeral=True)
 
         db = classes.SeedsDatabase()
-        if self.bot.get_guild(self.bot.seed_server_id).get_role(self.bot.top_runner_role_id) in interaction.user.roles:
-            channel = self.bot.get_channel(self.bot.submission_channel_id)
-        else:
+
+        channel = self.bot.get_channel(self.bot.submission_channel_id)
+        if not self.bot.get_guild(self.bot.seed_server_id).get_role(self.bot.top_runner_role_id) in interaction.user.roles:
             channel = self.bot.get_channel(self.bot.community_channel_id)
 
         if not db.seed_exists(self.children[0].value):

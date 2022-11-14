@@ -15,3 +15,4 @@ class Database:
 
 class Misc:
     WS_HOST = os.getenv("WS_HOST")
+    DEBUG = os.getenv("DEBUG")

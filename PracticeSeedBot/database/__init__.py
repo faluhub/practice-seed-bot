@@ -9,7 +9,11 @@ schemas = [
 
 tables = [
     "CREATE TABLE `practiceseedbot`.`uuids` (`id` BIGINT NOT NULL, `uuid` LONGTEXT NULL, PRIMARY KEY (`id`))",
-    "CREATE TABLE `practiceseedbot`.`seeds` (`seed` VARCHAR(100) NOT NULL, `message_id` BIGINT NOT NULL, `author_id` BIGINT NOT NULL, `seed_notes` LONGTEXT NULL, `upvotes` JSON NULL, PRIMARY KEY (`seed`), UNIQUE INDEX `seed_UNIQUE` (`seed` ASC) VISIBLE, UNIQUE INDEX `message_id_UNIQUE` (`message_id` ASC) VISIBLE)"
+    "CREATE TABLE `practiceseedbot`.`seeds` (`seed` VARCHAR(100) NOT NULL, `message_id` BIGINT NOT NULL, `author_id` BIGINT NOT NULL, `seed_notes` LONGTEXT NULL, `upvotes` JSON NULL, `downvotes` JSON NULL, PRIMARY KEY (`seed`), UNIQUE INDEX `seed_UNIQUE` (`seed` ASC) VISIBLE, UNIQUE INDEX `message_id_UNIQUE` (`message_id` ASC) VISIBLE)",
+]
+
+alters = [
+    "ALTER TABLE `practiceseedbot`.`seeds` ADD `downvotes` JSON NULL"
 ]
 
 class Result:
@@ -75,6 +79,12 @@ def create():
         table = i.split("`")[3]
         try: (cur.execute(i), db.commit(), print(f"  Created table '{table}'"))
         except Exception as e: print(f"  Error creating table '{table}': {e}")
+    
+    print("Altering tables...")
+    for i in alters:
+        table = i.split("`")[3]
+        try: (cur.execute(i), db.commit(), print(f"  Altered table '{table}'"))
+        except Exception as e: print(f"  Error altering table '{table}': {e}")
     
     cur.close()
     del cur
