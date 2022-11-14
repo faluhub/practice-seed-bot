@@ -56,7 +56,8 @@ class PracticeSeedBot(asb):
         )
         embed.add_field(name="Upvotes:", value=f"`{upvotes}`")
         embed.add_field(name="Downvotes:", value=f"`{downvotes}`")
-        embed.add_field(name="Author:", value=f"`{member.name}#{member.discriminator}`"),
+        if not member == None: embed.add_field(name="Author:", value=f"`{member.name}#{member.discriminator}`")
+        else: embed.add_field(name="Author:", value=f"`{author}`")
         return embed
 
     def load_cogs(self, folder=None):
