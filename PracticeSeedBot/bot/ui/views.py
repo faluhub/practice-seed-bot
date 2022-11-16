@@ -24,7 +24,7 @@ class SeedView(View):
             if seed != None:
                 notes = self.seed_db.get_notes(seed)
                 if not notes == None:
-                    author: discord.Member = self.bot.get_server(self.bot.seed_server_id).get_member(self.seed_db.get_author(seed))
+                    author: discord.Member = self.bot.get_guild(self.bot.seed_server_id).get_member(self.seed_db.get_author(seed))
                     if not author == None:
                         notes = "<" + author.name + "> " + notes
                 await constants.IO.emit("play", [self.uuid_db.get_uuid(interaction.user.id), seed, notes])
