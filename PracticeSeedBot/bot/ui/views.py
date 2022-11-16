@@ -22,7 +22,7 @@ class SeedView(View):
         if self.uuid_db.id_exists(interaction.user.id):
             seed = self.seed_db.get_seed(interaction.message.id)
             if seed != None:
-                await constants.IO.emit("play", [self.uuid_db.get_uuid(interaction.user.id), seed])
+                await constants.IO.emit("play", [self.uuid_db.get_uuid(interaction.user.id), seed, self.seed_db.get_notes(seed)])
                 return await interaction.response.send_message(f"Added seed `{seed}` to the queue!", ephemeral=True)
             return await interaction.response.send_message("Something went wrong while fetching this seed!", ephemeral=True)
         return await interaction.response.send_message("You do not have a UUID linked!", ephemeral=True)
