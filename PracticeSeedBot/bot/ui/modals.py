@@ -42,4 +42,4 @@ class SubmitModal(Modal):
             db.create_seed(self.children[0].value, msg.id, interaction.user.id, seed_notes)
 
             return await interaction.response.send_message("Done! Thank you for your submission.", ephemeral=True)
-        return await interaction.response.send_message("That seed has already been submitted!")
+        return await interaction.response.send_message("That seed has already been submitted!", ephemeral=True)

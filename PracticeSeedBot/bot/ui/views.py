@@ -89,3 +89,30 @@ class SeedView(View):
                 return await interaction.response.send_message("You have already upvoted this seed!", ephemeral=True)
             return await interaction.response.send_message("You are not allowed to downvote this seed!", ephemeral=True)
         return await interaction.response.send_message("Something went wrong while fetching this seed!", ephemeral=True)
+
+class RaceView(View):
+    def __init__(self, password: str, seed: str, host: discord.Member):
+        super().__init__()
+
+        self.password = password
+        self.seed = seed
+        self.host = host
+    
+    @discord.ui.button(
+        style=ButtonStyle.blurple,
+        label="Start!",
+        custom_id="raceview:start"
+    )
+    async def start(self, button: discord.Button, interaction: discord.Interaction):
+        await constants.IO.emit("race", [self.password, self.seed, f"{self.host.name}#{self.host.discriminator}"])
+        await interaction.response.send_message("Started!", ephemeral=True)
+        self.stop()
+    
+    @discord.ui.button(
+        style=ButtonStyle.red,
+        label="Cancel",
+        custom_id="raceview:cancel"
+    )
+    async def cancel(self, button: discord.Button, interaction: discord.Interaction):
+        await interaction.response.send_message("Cancelled! (This message will delete itself after 10 seconds)", ephemeral=True, delete_after=10)
+        self.stop()

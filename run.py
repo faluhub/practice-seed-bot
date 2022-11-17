@@ -9,4 +9,4 @@ if __name__ == "__main__":
     constants.IO = socketio.AsyncClient()
 
     database.create()
-    main.PracticeSeedBot(bool(secrets.Misc.DEBUG)).run(secrets.Discord.TOKEN)
+    main.PracticeSeedBot().run(secrets.Discord.TOKEN)
