@@ -54,7 +54,11 @@ class Submit(Cog):
             return await msg.edit_original_response(f"Added seed `{seed}` to the queue!")
     
     @commands.slash_command(name="race", description="Race against your friends!")
-    async def race(self, ctx: commands.ApplicationContext, password: Option(str, "The race password."), seed: Option(int, "The seed to play.")):
+    async def race(self, ctx: commands.ApplicationContext, password: Option(str, "The race password."), seed: Option(str, "The seed to play.")):
+        try:
+            int(seed)
+        except ValueError:
+            return await ctx.respond.send_message("That is an invalid seed!")
         embed = discord.Embed(
             title=f"Race: {seed}",
             description=f"> Click `start` to start the race.\n> This message will expire in `3 minutes`.\n> Password: ||`{password}`||",
