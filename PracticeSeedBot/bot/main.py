@@ -7,8 +7,7 @@ from PracticeSeedBot.bot.ui import views
 
 class PracticeSeedBot(asb):
     def __init__(self):
-
-        self.debug = bool(secrets.Misc.DEBUG)
+        self.debug = False
         self.persistent_views_added = False
         self.cog_blacklist = []
         self.cog_folder_blacklist = ["__pycache__"]
