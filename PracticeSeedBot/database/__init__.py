@@ -12,9 +12,7 @@ tables = [
     "CREATE TABLE `practiceseedbot`.`seeds` (`seed` VARCHAR(100) NOT NULL, `message_id` BIGINT NOT NULL, `author_id` BIGINT NOT NULL, `seed_notes` LONGTEXT NULL, `upvotes` JSON NULL, `downvotes` JSON NULL, PRIMARY KEY (`seed`), UNIQUE INDEX `seed_UNIQUE` (`seed` ASC) VISIBLE, UNIQUE INDEX `message_id_UNIQUE` (`message_id` ASC) VISIBLE)",
 ]
 
-alters = [
-    "ALTER TABLE `practiceseedbot`.`seeds` ADD `downvotes` JSON NULL"
-]
+alters = []
 
 class Result:
     def __init__(self, cursor: MySQLCursorAbstract):
