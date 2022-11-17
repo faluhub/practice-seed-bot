@@ -22,8 +22,6 @@ class Submit(Cog):
         if not self.check_uuid(uuid):
             return await msg.edit_original_response(content="That is an invalid UUID!")
         db = classes.UUIDDatabase()
-        if db.uuid_exists(uuid):
-            return await msg.edit_original_response(content="That UUID has already been linked!")
         db.set_uuid(ctx.author.id, uuid)
         return await msg.edit_original_response(content="Your UUID has been linked!\nYou can now play practice seeds via Discord.")
     
