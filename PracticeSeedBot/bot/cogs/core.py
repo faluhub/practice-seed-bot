@@ -32,9 +32,9 @@ class Submit(Cog):
         msg = await ctx.respond("Thinking...", ephemeral=True)
         db = classes.UUIDDatabase()
         if not db.id_exists(ctx.author.id):
-            return await msg.edit_original_response("You don't have a UUID linked!")
+            return await msg.edit_original_response(content="You don't have a UUID linked!")
         db.delete_uuid(ctx.author.id)
-        return await msg.edit_original_response("Your UUID has been unlinked!")
+        return await msg.edit_original_response(content="Your UUID has been unlinked!")
     
     @commands.slash_command(name="submit", description="Submit a practice seed.")
     async def submit(self, ctx: ApplicationContext):
@@ -51,7 +51,7 @@ class Submit(Cog):
                 args.append(seed_db.get_notes(str(seed)))
 
             await constants.IO.emit("play", args)
-            return await msg.edit_original_response(f"Added seed `{seed}` to the queue!")
+            return await msg.edit_original_response(content=f"Added seed `{seed}` to the queue!")
     
     @commands.slash_command(name="race", description="Race against your friends!")
     async def race(self, ctx: commands.ApplicationContext, password: Option(str, "The race password."), seed: Option(str, "The seed to play.")):
