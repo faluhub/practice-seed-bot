@@ -32,10 +32,8 @@ class SubmitModal(Modal):
         db = classes.SeedsDatabase()
 
         channel = self.bot.get_channel(self.bot.submission_channel_id)
-        if \
-            not self.bot.get_guild(self.bot.seed_server_id).get_role(self.bot.top_runner_role_id) in interaction.user.roles or \
-            not self.bot.get_guild(self.bot.seed_server_id).get_role(self.bot.developer_role_id) in interaction.user.roles:
-                channel = self.bot.get_channel(self.bot.community_channel_id)
+        if not self.bot.get_guild(self.bot.seed_server_id).get_role(self.bot.top_runner_role_id) in interaction.user.roles:
+            channel = self.bot.get_channel(self.bot.community_channel_id)
 
         if not db.seed_exists(self.children[0].value):
             msg = await channel.send(embed=self.bot.build_new_submission_embed(seed, seed_notes, interaction.user.id), view=views.SeedView(self.bot))
