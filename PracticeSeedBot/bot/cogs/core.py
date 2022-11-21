@@ -43,7 +43,7 @@ class Submit(Cog):
     @commands.slash_command(name="play", description="Play a seed.")
     async def play(self, ctx: ApplicationContext, seed: Option(str, "The seed to play.")):
         try: int(seed)
-        except ValueError: return await ctx.response.send_message("That is an invalid seed!")
+        except ValueError: return await ctx.response.send_message("That is an invalid seed!", ephemeral=True)
 
         msg = await ctx.respond("Thinking...", ephemeral=True)
         db = classes.UUIDDatabase()
@@ -59,7 +59,7 @@ class Submit(Cog):
     @commands.slash_command(name="race", description="Race against your friends!")
     async def race(self, ctx: commands.ApplicationContext, password: Option(str, "The race password."), seed: Option(str, "The seed to play.")):
         try: int(seed)
-        except ValueError: return await ctx.response.send_message("That is an invalid seed!")
+        except ValueError: return await ctx.response.send_message("That is an invalid seed!", ephemeral=True)
         
         embed = discord.Embed(
             title=f"Race: {seed}",
