@@ -48,7 +48,7 @@ class Submit(Cog):
         msg = await ctx.respond("Thinking...", ephemeral=True)
         db = classes.UUIDDatabase()
         if db.id_exists(ctx.author.id):
-            args = [self.uuid_db.get_uuid(ctx.author.id), str(seed)]
+            args = [db.get_uuid(ctx.author.id), str(seed)]
             seed_db = classes.SeedsDatabase()
             if seed_db.seed_exists(str(seed)):
                 args.append(seed_db.get_notes(str(seed)))
