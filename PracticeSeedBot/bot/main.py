@@ -9,7 +9,7 @@ from socketio import AsyncClient
 class PracticeSeedBot(AutoShardedBot):
     def __init__(self):
         self.start_time = datetime.utcnow()
-        self.debug = True
+        self.debug = False
         self.persistent_views_added = False
 
         self.cog_blacklist = []
