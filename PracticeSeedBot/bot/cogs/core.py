@@ -50,10 +50,8 @@ class Submit(Cog):
 
         db = classes.UUIDDatabase()
         if db.id_exists(ctx.author.id):
-            args = [db.get_uuid(ctx.author.id), str(seed)]
             seed_db = classes.SeedsDatabase()
-            if seed_db.seed_exists(str(seed)):
-                args.append(seed_db.get_notes(str(seed)))
+            args = [db.get_uuid(ctx.author.id), str(seed), seed_db.get_notes(str(seed))]
 
             await self.bot.io.emit("play", args)
             return await ctx.followup.send(f"Added seed `{seed}` to the queue!", ephemeral=True)
@@ -85,8 +83,9 @@ class Submit(Cog):
             uuid = uuid_db.get_uuid(ctx.author.id)
 
             for seed in seeds:
+                args = [uuid, str(seed), db.get_notes(str(seed))]
                 content += seed + "\n"
-                await self.bot.io.emit("play", [uuid, str(seed)])
+                await self.bot.io.emit("play", args)
             content += "```"
 
             embed = discord.Embed(
