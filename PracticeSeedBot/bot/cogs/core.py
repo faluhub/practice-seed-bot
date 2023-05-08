@@ -74,7 +74,6 @@ class Submit(Cog):
         return await ctx.followup.send(embed=embed, view=views.RaceView(password, seed, ctx.author), ephemeral=True, delete_after=180)
     
     @commands.slash_command(name="random", description="Queue a random seed.")
-    @discord.default_permissions(manage_guild=True)
     async def random(self, ctx: commands.ApplicationContext, amount: Option(int, "The amount of seeds.", default=1)):
         await ctx.defer()
 
