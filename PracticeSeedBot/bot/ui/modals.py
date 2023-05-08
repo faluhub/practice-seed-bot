@@ -6,7 +6,7 @@ from PracticeSeedBot.database import classes
 from PracticeSeedBot.bot.ui import views
 
 class SubmitModal(Modal):
-    def __init__(self, bot: PracticeSeedBot):
+    def __init__(self, bot):
         super().__init__(
             InputText(
                 label="Seed:",
@@ -20,7 +20,7 @@ class SubmitModal(Modal):
             title="Submit Seed"
         )
 
-        self.bot = bot
+        self.bot: PracticeSeedBot = bot
     
     async def callback(self, interaction: discord.Interaction):
         seed = self.children[0].value

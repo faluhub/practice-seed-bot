@@ -1,7 +1,6 @@
 import discord
 from discord import ButtonStyle, PartialEmoji
 from discord.ui import View, Button
-from PracticeSeedBot import constants
 from PracticeSeedBot.database import classes
 
 class SeedView(View):
@@ -18,7 +17,7 @@ class SeedView(View):
         label="Play",
         custom_id="seedview:play"
     )
-    async def play(self, button: Button, interaction: discord.Interaction):
+    async def play(self, _: Button, interaction: discord.Interaction):
         if self.uuid_db.id_exists(interaction.user.id):
             seed = self.seed_db.get_seed(interaction.message.id)
             if seed != None:
@@ -27,7 +26,7 @@ class SeedView(View):
                     author: discord.Member = self.bot.get_guild(self.bot.seed_server_id).get_member(self.seed_db.get_author(seed))
                     if not author == None:
                         notes = "<" + author.name + "> " + notes
-                await constants.IO.emit("play", [self.uuid_db.get_uuid(interaction.user.id), seed, notes])
+                await self.bot.io.emit("play", [self.uuid_db.get_uuid(interaction.user.id), seed, notes])
                 return await interaction.response.send_message(f"Added seed `{seed}` to the queue!", ephemeral=True)
             return await interaction.response.send_message("Something went wrong while fetching this seed!", ephemeral=True)
         return await interaction.response.send_message("You do not have a UUID linked!", ephemeral=True)
@@ -38,7 +37,7 @@ class SeedView(View):
         emoji=PartialEmoji.from_str("<:thumbs_up:1041742988528844890>"),
         custom_id="seedview:upvote"
     )
-    async def upvote(self, button: Button, interaction: discord.Interaction):
+    async def upvote(self, _: Button, interaction: discord.Interaction):
         seed = self.seed_db.get_seed(interaction.message.id)
         if not seed == None:
             if not self.seed_db.has_downvoted(seed, interaction.user.id):
@@ -66,7 +65,7 @@ class SeedView(View):
         emoji=PartialEmoji.from_str("<:thumbs_down:1041742979930521621>"),
         custom_id="seedview:downvote"
     )
-    async def downvote(self, button: Button, interaction: discord.Interaction):
+    async def downvote(self, _: Button, interaction: discord.Interaction):
         seed = self.seed_db.get_seed(interaction.message.id)
         if not seed == None:
             if self.bot.get_guild(self.bot.seed_server_id).get_role(self.bot.top_runner_role_id) in interaction.user.roles:
@@ -103,8 +102,8 @@ class RaceView(View):
         label="Start!",
         custom_id="raceview:start"
     )
-    async def start(self, button: discord.Button, interaction: discord.Interaction):
-        await constants.IO.emit("race", [self.password, self.seed, f"{self.host.name}#{self.host.discriminator}"])
+    async def start(self, _: discord.Button, interaction: discord.Interaction):
+        await self.io.emit("race", [self.password, self.seed, f"{self.host.name}#{self.host.discriminator}"])
         await interaction.response.send_message("Started!", ephemeral=True)
         self.stop()
     
@@ -113,6 +112,6 @@ class RaceView(View):
         label="Cancel",
         custom_id="raceview:cancel"
     )
-    async def cancel(self, button: discord.Button, interaction: discord.Interaction):
+    async def cancel(self, _: discord.Button, interaction: discord.Interaction):
         await interaction.response.send_message("Cancelled! (This message will delete itself after 10 seconds)", ephemeral=True, delete_after=10)
         self.stop()

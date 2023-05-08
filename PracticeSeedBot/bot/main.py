@@ -1,17 +1,23 @@
-import discord, os
+import discord, os, socketio
 from datetime import datetime
-from discord import ApplicationContext, commands, AutoShardedBot as asb
-from PracticeSeedBot import constants, secrets
+from discord import ApplicationContext, commands, AutoShardedBot
+from PracticeSeedBot import secrets
 from PracticeSeedBot.database import classes
 from PracticeSeedBot.bot.ui import views
+from socketio import AsyncClient
 
-class PracticeSeedBot(asb):
+class PracticeSeedBot(AutoShardedBot):
     def __init__(self):
-        self.debug = False
+        self.start_time = datetime.utcnow()
+        self.debug = True
         self.persistent_views_added = False
+
         self.cog_blacklist = []
         self.cog_folder_blacklist = ["__pycache__"]
-        self.path = "./PracticeSeedBot/bot/cogs"
+        self.cogs_path = "./PracticeSeedBot/bot/cogs"
+
+        self.color = 0x9bc4af
+        self.io: AsyncClient = socketio.AsyncClient()
 
         self.submission_channel_id = 1038788499161235477 if self.debug else 1035808397351714929
         self.community_channel_id = 1042885879569596466 if self.debug else 1039991212716863529
@@ -28,6 +34,7 @@ class PracticeSeedBot(asb):
         )
 
         @commands.slash_command(name="reload", description="Reload the cogs.")
+        @discord.default_permissions(manage_guild=True)
         async def reload_cogs(ctx: ApplicationContext):
             msg = await ctx.respond("Thinking...", ephemeral=True)
             if self.get_guild(self.seed_server_id).get_role(self.developer_role_id) in ctx.author.roles:
@@ -51,7 +58,7 @@ class PracticeSeedBot(asb):
         member = self.get_guild(self.seed_server_id).get_member(author)
         embed = discord.Embed(
             title=str(seed),
-            color=constants.COLOR,
+            color=self.color,
             description=f"Seed Notes:\n||{notes}||"
         )
         embed.add_field(name="Upvotes:", value=f"`{upvotes}`")
@@ -61,11 +68,11 @@ class PracticeSeedBot(asb):
         return embed
 
     def load_cogs(self, folder=None):
-        if folder != None: self.path = os.path.join(self.path, folder)
-        formatted_path = self.path.strip("./").replace("/", ".").replace("\\", ".")
+        if folder != None: self.cogs_path = os.path.join(self.cogs_path, folder)
+        formatted_path = self.cogs_path.strip("./").replace("/", ".").replace("\\", ".")
 
-        for file in os.listdir(self.path):
-            if not os.path.isdir(os.path.join(self.path, file)):
+        for file in os.listdir(self.cogs_path):
+            if not os.path.isdir(os.path.join(self.cogs_path, file)):
                 if not file in self.cog_blacklist:
                     try:
                         self.load_extension(f"{formatted_path}.{file[:-3]}")
@@ -78,7 +85,7 @@ class PracticeSeedBot(asb):
     async def on_connect(self):
         (
             print("Connecting to socket..."),
-            await constants.IO.connect(url=secrets.Misc.WS_HOST, transports=["websocket"])
+            await self.io.connect(url=secrets.Misc.WS_HOST, transports=["websocket"])
         )
         (
             print("Loading cogs..."),
@@ -94,12 +101,9 @@ class PracticeSeedBot(asb):
     async def on_ready(self):
         if not self.persistent_views_added:
             print("Adding persistent views...")
-
             self.add_view(views.SeedView(self))
-
             self.persistent_views_added = True
-
-        return print(f"Ready, took {(datetime.utcnow() - constants.START_TIME).seconds} seconds.")
+        return print(f"Ready, took {(datetime.utcnow() - self.start_time).seconds} seconds.")
 
 if __name__ == "__main__":
     exit("The bot cannot be run directly from the bot file.")

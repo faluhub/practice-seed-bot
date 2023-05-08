@@ -32,6 +32,9 @@ class SeedsDatabase:
     def get_seed(self, message_id: int) -> str | None:
         return database.select(f"SELECT `seed` FROM `practiceseedbot`.`seeds` WHERE message_id = '{message_id}'").value
     
+    def get_random_seeds(self, amount: int=1):
+        return database.select(f"SELECT `seed` FROM `practiceseedbot`.`seeds` ORDER BY RAND() LIMIT {amount}").value_all
+
     def get_notes(self, seed: str) -> str | None:
         value = database.select(f"SELECT `seed_notes` FROM `practiceseedbot`.`seeds` WHERE seed = '{seed}'").value
         if not value == None:
