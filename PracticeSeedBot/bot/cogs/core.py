@@ -19,7 +19,7 @@ class Submit(Cog):
     
     @commands.slash_command(name="link", description="Link your UUID from the mod.")
     async def link(self, ctx: ApplicationContext, uuid: Option(str, "Enter the UUID.")):
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         if not self.check_uuid(uuid):
             return await ctx.followup.send("That is an invalid UUID!", ephemeral=True)
@@ -29,7 +29,7 @@ class Submit(Cog):
     
     @commands.slash_command(name="unlink", description="Unlink your UUID from the mod.")
     async def unlink(self, ctx: ApplicationContext):
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         db = classes.UUIDDatabase()
         if not db.id_exists(ctx.author.id):
@@ -43,7 +43,7 @@ class Submit(Cog):
     
     @commands.slash_command(name="play", description="Play a seed.")
     async def play(self, ctx: ApplicationContext, seed: Option(str, "The seed to play.")):
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         try: int(seed)
         except ValueError: return await ctx.followup.send("That is an invalid seed!", ephemeral=True)
@@ -61,7 +61,7 @@ class Submit(Cog):
     
     @commands.slash_command(name="race", description="Race against your friends!")
     async def race(self, ctx: commands.ApplicationContext, password: Option(str, "The race password."), seed: Option(str, "The seed to play.")):
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         try: int(seed)
         except ValueError: return await ctx.followup.send("That is an invalid seed!", ephemeral=True)
@@ -75,7 +75,7 @@ class Submit(Cog):
     
     @commands.slash_command(name="random", description="Queue a random seed.")
     async def random(self, ctx: commands.ApplicationContext, amount: Option(int, "The amount of seeds.", default=1)):
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         uuid_db = classes.UUIDDatabase()
         if uuid_db.id_exists(ctx.author.id):
