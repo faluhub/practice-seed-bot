@@ -1,5 +1,4 @@
 import discord
-from uuid import UUID as UUIDTest
 from discord import commands, ApplicationContext, Option
 from discord.ext.commands import Cog
 from PracticeSeedBot.bot.main import PracticeSeedBot
@@ -11,11 +10,6 @@ class Submit(Cog):
         super().__init__()
         
         self.bot: PracticeSeedBot = bot
-
-    def check_uuid(self, uuid: str):
-        try: uuid_obj = UUIDTest(uuid, version=4)
-        except ValueError: return False
-        return str(uuid_obj) == uuid
     
     @commands.slash_command(name="link", description="Link your UUID from the mod.")
     async def link(self, ctx: ApplicationContext, _: Option(str, "Enter the UUID.")):
