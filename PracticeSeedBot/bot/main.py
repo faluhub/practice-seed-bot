@@ -1,10 +1,8 @@
-import discord, os, socketio
+import discord, os
 from datetime import datetime
-from discord import ApplicationContext, commands, AutoShardedBot
-from PracticeSeedBot import secrets
+from discord import ApplicationContext, commands, AutoShardedBot, Interaction
 from PracticeSeedBot.database import classes
 from PracticeSeedBot.bot.ui import views
-from socketio import AsyncClient
 
 class PracticeSeedBot(AutoShardedBot):
     def __init__(self):
@@ -17,7 +15,6 @@ class PracticeSeedBot(AutoShardedBot):
         self.cogs_path = "./PracticeSeedBot/bot/cogs"
 
         self.color = 0x9bc4af
-        self.io: AsyncClient = socketio.AsyncClient()
 
         self.submission_channel_id = 1038788499161235477 if self.debug else 1035808397351714929
         self.community_channel_id = 1042885879569596466 if self.debug else 1039991212716863529
@@ -82,11 +79,12 @@ class PracticeSeedBot(AutoShardedBot):
                 if not file in self.cog_folder_blacklist:
                     self.load_cogs(file)
     
+    async def out_of_service(self, ctx):
+        msg = "This feature is no longer in use.\nRead https://discord.com/channels/1035808396349292546/1041100738731978762/1116074267931590706 for info."
+        if isinstance(ctx, ApplicationContext): return await ctx.followup.send(msg, ephemeral=True)
+        elif isinstance(ctx, Interaction): return await ctx.response.send_message(msg, ephemeral=True)
+    
     async def on_connect(self):
-        (
-            print("Connecting to socket..."),
-            await self.io.connect(url=secrets.Misc.WS_HOST, transports=["websocket"])
-        )
         (
             print("Loading cogs..."),
             self.load_cogs()

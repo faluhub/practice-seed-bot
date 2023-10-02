@@ -1,24 +1,5 @@
 from PracticeSeedBot import database
 
-class UUIDDatabase:
-    def uuid_exists(self, uuid: str) -> bool:
-        return database.select(f"SELECT `uuid` FROM `practiceseedbot`.`uuids` WHERE uuid = '{uuid}'").value != None
-    
-    def id_exists(self, id: int) -> bool:
-        return database.select(f"SELECT `id` FROM `practiceseedbot`.`uuids` WHERE id = '{id}'").value != None
-    
-    def get_uuid(self, id: int) -> str | None:
-        return database.select(f"SELECT `uuid` FROM `practiceseedbot`.`uuids` WHERE id = '{id}'").value
-    
-    def set_uuid(self, id: int, uuid: str):
-        if self.id_exists(id):
-            return database.update(f"UPDATE `practiceseedbot`.`uuids` SET `uuid` = '{uuid}' WHERE (`id` = '{id}')")
-        return database.update(f"INSERT INTO `practiceseedbot`.`uuids` (id, uuid) VALUES('{id}', '{uuid}')")
-    
-    def delete_uuid(self, id: int):
-        if self.id_exists(id):
-            return database.update(f"DELETE FROM `practiceseedbot`.`uuids` WHERE `id` = '{id}'")
-
 class SeedsDatabase:
     REPLACE_NAME = "kbjse3hugspghjesj"
 

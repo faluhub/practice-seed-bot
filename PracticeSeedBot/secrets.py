@@ -14,5 +14,4 @@ class Database:
     PASSWORD = os.getenv("DB_PASSWORD")
 
 class Misc:
-    WS_HOST = os.getenv("WS_HOST")
     DEBUG = os.getenv("DEBUG")
