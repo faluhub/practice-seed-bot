@@ -1,12 +1,11 @@
 import discord
 from discord import ButtonStyle, PartialEmoji
 from discord.ui import View, Button
-from PracticeSeedBot.database import classes
 
 class SeedView(View):
     def __init__(self, bot):
         super().__init__(timeout=None)
-        
+
         self.bot = bot
     
     @discord.ui.button(

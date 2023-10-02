@@ -1,7 +1,7 @@
-from PracticeSeedBot import database
+from PracticeSeedBot import database, secrets
 
 class SeedsDatabase:
-    REPLACE_NAME = "kbjse3hugspghjesj"
+    REPLACE_NAME = secrets.Database.REPLACE_SECRET
 
     def seed_exists(self, seed: str) -> bool:
         return database.select(f"SELECT `seed` FROM `practiceseedbot`.`seeds` WHERE seed = '{seed}'").value != None
