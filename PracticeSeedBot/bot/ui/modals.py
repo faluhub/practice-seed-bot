@@ -17,17 +17,20 @@ class SubmitModal(Modal):
                 label="Seed Notes:",
                 max_length=100
             ),
-            title="Submit Seed"
+            title="Submit Seed",
+            timeout=None
         )
 
         self.bot: PracticeSeedBot = bot
     
     async def callback(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
         seed = self.children[0].value
         seed_notes = self.children[1].value
 
         try: seed = int(seed)
-        except ValueError: return await interaction.response.send_message("That is an invalid seed! Please try again.", ephemeral=True)
+        except ValueError: return await interaction.followup.send("That is an invalid seed! Please try again.")
 
         db = classes.SeedsDatabase()
 
@@ -39,5 +42,5 @@ class SubmitModal(Modal):
             msg = await channel.send(embed=self.bot.build_new_submission_embed(seed, seed_notes, interaction.user.id), view=views.SeedView(self.bot))
             db.create_seed(self.children[0].value, msg.id, interaction.user.id, seed_notes)
 
-            return await interaction.response.send_message("Done! Thank you for your submission.", ephemeral=True)
-        return await interaction.response.send_message("That seed has already been submitted!", ephemeral=True)
+            return await interaction.followup.send("Done! Thank you for your submission.")
+        return await interaction.followup.send("That seed has already been submitted!")
